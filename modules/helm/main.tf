@@ -14,7 +14,23 @@ resource "helm_release" "argocd" {
 
   timeout = 300
 
- values = [
-    file("${path.module}/argocd-values.yaml")
-  ]
+  
+
+#  values = [
+#     file("${path.module}/argocd-values.yaml")
+#   ]
+
+  set {
+    name  = "server.service.type"
+    value = "LoadBalancer"
+  }
+  # set {
+  #   name  = "configs.secret.createSecret"
+  #   value = "true"
+  # }
+
+  # set {
+  #   name  = "configs.secret.argocdServerAdminPassword"
+  #   value = "plaintext:${var.admin_password}"
+  # }
 }

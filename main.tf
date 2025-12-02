@@ -46,6 +46,11 @@ module "service_account" {
   project = "brave-inn-477912-q1"
   region = var.region
   github_repository = "https://github.com/fredricklitvin/k8s-project-helm.git"
-  project_suffix = "v1"
+  project_suffix = "v6"
 
+}
+
+module "argocd" {
+  source = "./modules/argocd"
+  depends_on = [module.helm]
 }

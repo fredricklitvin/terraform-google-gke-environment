@@ -6,11 +6,15 @@ terraform {
     }
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.9.0"
+      version = "~> 2.12.1"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.0"
+    }
+     argocd = {
+      source = "argoproj-labs/argocd"
+      version = "7.12.0"
     }
   }
 
@@ -44,11 +48,18 @@ provider "kubernetes" {
 }
 
 provider "helm" {
-  kubernetes = {
+  kubernetes {
     host                   = "https://${data.google_container_cluster.container_cluster.endpoint}"
     token                  = data.google_client_config.me.access_token
     cluster_ca_certificate = base64decode(
       data.google_container_cluster.container_cluster.master_auth[0].cluster_ca_certificate
     )
   }
+}
+
+provider "argocd" {
+  server_addr = "${module.helm.argocd_server_ip}:443"
+  username    = "admin"
+  password    = module.helm.argocd_initial_admin_password
+  insecure = true
 }

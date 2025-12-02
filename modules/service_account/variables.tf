@@ -12,7 +12,7 @@ variable region {
 variable project_suffix {
   type        = string
   description = "A unique suffix for resources to prevent naming conflicts"
-  default     = "v2"
+  default     = "v3"
 }
 
 variable github_repository {
