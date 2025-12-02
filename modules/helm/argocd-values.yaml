@@ -1,0 +1,24 @@
+server:
+  service:
+    type: LoadBalancer
+
+# additionalApplications:
+#   - name: my-app-cd
+#     # this metadata.namespace defaults to the release namespace (argocd),
+#     # but it's OK to be explicit:
+#     namespace: argocd
+#     project: default
+#     source:
+#       repoURL: ${git_repo_url}      # e.g. https://github.com/argoproj/argocd-example-apps.git
+#       targetRevision: main
+#       path: ${k8s_path}             # e.g. guestbook  (must contain Chart.yaml/kustomization.yaml/manifests)
+#       # helm: { }                   # optional: valueFiles/values if the path is a Helm chart
+#     destination:
+#       server: https://kubernetes.default.svc
+#       namespace: app-production
+#     syncPolicy:
+#       automated:
+#         prune: true
+#         selfHeal: true
+#       syncOptions:
+#         - CreateNamespace=true

@@ -15,18 +15,18 @@ terraform {
   }
 
   backend "gcs" {
-    bucket = "terraform-state-fred"
+    bucket = "terraform-state-fredi"
     prefix = "terraform/gkc-state"
   }
 }
 
 provider "google" {
-  project = "i-agility-465314-p6"
+  project = "brave-inn-477912-q1"
   region  = var.region
 }
 
 
-data "google_container_cluster" "this" {
+data "google_container_cluster" "container_cluster" {
   name       = "k8s"
   location   = var.region
   depends_on = [module.gke] 
@@ -36,19 +36,19 @@ data "google_client_config" "me" {}
 
 
 provider "kubernetes" {
-  host                   = "https://${data.google_container_cluster.this.endpoint}"
+  host                   = "https://${data.google_container_cluster.container_cluster.endpoint}"
   token                  = data.google_client_config.me.access_token
   cluster_ca_certificate = base64decode(
-    data.google_container_cluster.this.master_auth[0].cluster_ca_certificate
+    data.google_container_cluster.container_cluster.master_auth[0].cluster_ca_certificate
   )
 }
 
 provider "helm" {
   kubernetes = {
-    host                   = "https://${data.google_container_cluster.this.endpoint}"
+    host                   = "https://${data.google_container_cluster.container_cluster.endpoint}"
     token                  = data.google_client_config.me.access_token
     cluster_ca_certificate = base64decode(
-      data.google_container_cluster.this.master_auth[0].cluster_ca_certificate
+      data.google_container_cluster.container_cluster.master_auth[0].cluster_ca_certificate
     )
   }
 }

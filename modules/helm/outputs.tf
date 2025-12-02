@@ -16,3 +16,17 @@ output "argocd_server_ip" {
   )
 }
 
+
+data "kubernetes_secret_v1" "argocd_initial_admin" {
+  metadata {
+    name      = "argocd-initial-admin-secret"
+    namespace = helm_release.argocd.namespace
+  }
+  depends_on = [helm_release.argocd]
+}
+
+output "argocd_initial_admin_password" {
+  value     = try(data.kubernetes_secret_v1.argocd_initial_admin.data["password"], null)
+  sensitive = true
+  description = "Initial Argo CD admin password (null after first login)"
+}
